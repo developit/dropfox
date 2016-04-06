@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script>
+			window.addEventListener('load', function() {
+				var opener = window.parent!==window.top ? window.parent : window.opener;
+				if (!opener) return;
+				try {
+					opener.postMessage(JSON.stringify({
+						_dropboxjs_oauth_info: location.href
+					}), location.origin);
+					window.close();
+				} catch (e) {}
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Dropbox sign-in successful</h1>
+		<p>Please close this window.</p>
+	</body>
+</html>

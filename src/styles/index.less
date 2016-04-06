@@ -1,0 +1,116 @@
+@import (less) '~photon/dist/css/photon.css';
+
+#app {
+	.toolbar {
+		-webkit-app-region: drag;
+		.form-control {
+			-webkit-app-region: no-drag;
+		}
+	}
+	.sidebar {
+		flex: 0;
+	}
+}
+
+tr.selected,
+.table-striped tr:nth-child(even).selected {
+	color: #fff;
+	background-color: #116cd6;
+}
+
+.file-list {
+	th, td {
+		padding: 2px 8px;
+	}
+}
+
+// fix <ButtonGroup><Button /></ButtonGroup>
+.btn-group > .btn:first-child:last-child {
+	border-radius: 4px;
+}
+
+// normalize search inputs (but keep the cancel "X" button):
+input[type="search"] {
+	-webkit-appearance: textfield;
+	&::-webkit-search-cancel-button {
+		-webkit-appearance: searchfield-cancel-button;
+		opacity: 1;
+	}
+}
+
+.toolbar-input {
+	position: relative;
+	overflow: visible;
+	margin: -1px 0 0;
+	padding: 0;
+	.icon {
+		position: absolute;
+		left: 10px;
+		top: 4px;
+		z-index: 1;
+		opacity: 0.5;  /* ~matches placeholder */
+	}
+	.form-control {
+		padding: 3px 4px 1px 24px;
+		border-radius: 12px;
+		box-shadow: inset 0 1px 2px rgba(0,0,0,0.4),
+					0 0 0 7px rgba(109,179,253,0);
+
+		&:focus {
+			box-shadow: inset 0 1px 2px rgba(0,0,0,0.4),
+						0 0 0 1px rgba(109,179,253,0.8);
+			transition: box-shadow 250ms ease-out;
+			cursor: text;
+		}
+	}
+}
+
+.icon {
+	&.fliph::before {
+		position: relative;
+		left: 1px;
+		transform: scaleX(-1);
+	}
+	&.square {
+		display: inline-block;
+		width: 1.8em;
+		text-align: center;
+	}
+}
+
+
+.cotable {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+.cotable table {
+	table-layout: fixed;
+	width: 100%;
+}
+table + table {
+	display: block;
+	flex: 1;
+	overflow-y: auto;
+}
+table + table tbody {
+	width: 100%;
+	display: table;
+}
+
+
+
+.rotate {
+	transform-origin: 50% 50%;
+	will-change: transform;
+	animation: rotate 500ms linear infinite;
+}
+@keyframes rotate {
+	0% { transform:rotate(0deg); }
+	100% { transform:rotate(360deg); }
+}

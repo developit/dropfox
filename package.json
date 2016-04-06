@@ -1,0 +1,79 @@
+{
+  "name": "dropfox",
+  "productName": "Dropfox",
+  "version": "1.0.0",
+  "description": "Dropbox client, powered by Electron.",
+  "license": "MIT",
+  "main": "build/electron/index.js",
+  "repository": "developit/dropfox",
+  "author": {
+    "name": "Jason Miller",
+    "email": "jason@developit.ca",
+    "url": "http://jasonformat.com"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "electronVersion": "0.34.0",
+  "scripts": {
+    "test": "eslint src",
+    "start": "ENV=dev parallelshell 'npm run dev' 'npm run thenelectron'",
+    "dev": "npm run build:assets && npm run build:transpilewrap && webpack-dev-server --hot --inline",
+    "thenelectron": "sleep 2; electron .",
+    "build": "npm run build:assets && npm run build:transpilewrap && npm run build:transpile && npm run build:electron:all",
+    "build:test": "npm run build:assets && npm run build:transpilewrap && npm run build:transpile && npm run build:electron:osx && ./dist/${npm_package_productName}-darwin-x64/${npm_package_productName}.app/Contents/MacOS/Electron",
+    "build:assets": "ncp src/assets build/assets",
+    "build:transpilewrap": "babel electron -s -d build/electron",
+    "build:transpile": "ENV=prod webpack -p",
+    "build:electron:all": "parallelshell 'npm run build:electron:osx' 'npm run build:electron:linux' 'npm run build:electron:win'",
+    "build:electron:osx": "npm run build:electron -- --icon ./src/assets/icon.icns --platform=darwin",
+    "build:electron:linux": "npm run build:electron -- --icon ./src/assets/icon.png --platform=linux",
+    "build:electron:win": "npm run build:electron -- --icon ./src/assets/icon.ico --platform=win32",
+    "build:electron": "electron-packager . $npm_package_productName --out=dist --ignore='^/(src|dist|LICENSE)$' --overwrite --prune --asar --arch=all --version=$npm_package_electronVersion"
+  },
+  "files": [
+    "build/assets/oauth_receiver.html",
+    "build/index.js",
+    "build/index.html",
+    "build/style.css"
+  ],
+  "keywords": [
+    "electron-app"
+  ],
+  "dependencies": {
+    "decko": "^1.1.2",
+    "dropbox": "robertknight/dropbox-js#5568865764d9deab69836569a69d72d200c88293",
+    "neatime": "^1.0.0",
+    "photon": "connors/photon#v0.1.2-alpha",
+    "praline": "^0.3.1",
+    "preact": "^2.1.0",
+    "preact-photon": "^1.0.6",
+    "request": "^2.67.0",
+    "tmp": "0.0.28",
+    "wildemitter": "^1.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "^3.1.0",
+    "babel": "^5.8.23",
+    "babel-core": "^5.8.25",
+    "babel-loader": "^5.3.2",
+    "css-loader": "^0.23.0",
+    "electron-debug": "^0.2.1",
+    "electron-packager": "^5.0.0",
+    "electron-prebuilt": "^0.34.0",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "file-loader": "^0.8.4",
+    "html-webpack-plugin": "^1.6.2",
+    "less": "^2.5.3",
+    "less-loader": "^2.2.1",
+    "ncp": "^2.0.0",
+    "parallelshell": "^2.0.0",
+    "raw-loader": "^0.5.1",
+    "redux": "^3.0.4",
+    "source-map-loader": "^0.1.5",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.8",
+    "webpack-dev-server": "^1.12.1"
+  }
+}
