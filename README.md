@@ -1,7 +1,14 @@
-# dropfox
+# Dropfox
 
-> A dropbox client powered by [Preact], [Electron] and [Photon].
+A dropbox client powered by [Preact], [Electron] and [Photon].
 
+
+<img src="http://i.imgur.com/fN1PmUN.png" width="717">
+
+
+> **Note:** building the app requires a Dropbox API Key, specified as `DROPBOX_API_KEY` env var.
+>
+> If you need a key, [generate one here](https://www.dropbox.com/developers/apps/).
 
 ## Dev
 
