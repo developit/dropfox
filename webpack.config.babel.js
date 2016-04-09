@@ -1,22 +1,28 @@
-var pkg = require('./package.json'),
-	webpack = require('webpack'),
-	path = require('path'),
-	ExtractTextPlugin = require("extract-text-webpack-plugin"),
-	HtmlPlugin = require('html-webpack-plugin');
+import pkg from './package.json';
+import path from 'path';
+import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import autoprefixer from 'autoprefixer';
+
+const ENV = process.env.NODE_ENV || 'development';
 
 module.exports = {
-	entry: './src/index.js',
+	context: `${__dirname}/src`,
+	entry: './index.js',
 
 	target: 'web',
 
 	output: {
-		path: path.join(__dirname, 'build'),
+		path: `${__dirname}/build`,
+		publicPath: '/',
 		filename: 'index.js'
 	},
 
 	resolve: {
 		modulesDirectories: [
-			path.resolve(__dirname, 'src/lib'),
+			`${__dirname}/src/lib`,
+			`${__dirname}/node_modules`,
 			'node_modules'
 		]
 		// alias: {
@@ -36,7 +42,7 @@ module.exports = {
 		preLoaders: [
 			{
 				test: /\.(jsx?|css|less)$/,
-				exclude: /(webpack\-dev\-server|socket\.io\-client)/,
+				exclude: /(src|webpack\-dev\-server|socket\.io\-client)/,
 				loader: 'source-map'
 			}
 		],
@@ -49,32 +55,36 @@ module.exports = {
 			},
 			{
 				test: /\.(css|less)$/,
-				loader: ExtractTextPlugin.extract('style?sourceMap', 'css?sourceMap!autoprefixer?browsers=last 2 version!less?sourceMap?noIeCompat')
-				// loaders: ['style?sourceMap', 'css?sourceMap', 'autoprefixer?browsers=last 2 version', 'less?config=--inline-urls']
+				loader: ExtractTextPlugin.extract(
+					'style?sourceMap',
+					'css?sourceMap!postcss!less?sourceMap'
+				)
 			},
 			{
-				test: /\.(eot|ttf|otf|woff)$/,
+				test: /\.(svg|woff2?|ttf|eot)$/,
 				loader: 'url'
 			}
 		]
 	},
 
+	postcss: () => [
+		autoprefixer({ browsers: 'last 2 versions' })
+	],
+
 	plugins: [
 		new webpack.NoErrorsPlugin(),
+		new ExtractTextPlugin('style.css', {
+			allChunks: true
+		}),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.DefinePlugin({
 			API_KEY: JSON.stringify(process.env.DROPBOX_API_KEY)
 		}),
-		new ExtractTextPlugin('style.css', {
-			allChunks: true
-		}),
-		new HtmlPlugin({
+		new HtmlWebpackPlugin({
 			title: pkg.productName || pkg.name,
 			filename: 'index.html',
-			minify: {
-				collapseWhitespace: true
-			}
+			minify: { collapseWhitespace: true }
 		})
 	],
 
@@ -87,12 +97,10 @@ module.exports = {
 		setImmediate: false
 	},
 
-	stats: {
-		colors: true
-	},
+	stats: { colors: true },
 
 	// Create Sourcemaps for the bundle
-	devtool: process.env.ENV==='dev' ? 'inline-source-map' : 'source-map',
+	devtool: ENV==='development' ? 'inline-source-map' : 'source-map',
 
 	devServer: {
 		port: process.env.PORT || 19998,

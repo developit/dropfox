@@ -1,5 +1,10 @@
-import './styles/index.less';
 import { h, render } from 'preact';
-import App from './app';
+import './styles/index.less';
 
-render(<App />, document.body);
+function init() {
+	let App = require('./app');
+	render(<App />, document.body);
+}
+init();
+
+if (module.hot) module.hot.accept('./app', () => requestAnimationFrame(init));

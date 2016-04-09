@@ -1,5 +1,12 @@
 {
-  "sourceMaps": "inline",
-  "jsxPragma": "h",
-  "stage": 0
+  "sourceMaps": true,
+  "presets": [
+    "es2015-minimal",
+    "stage-0"
+  ],
+  "plugins": [
+    "add-module-exports",
+    ["transform-decorators-legacy"],
+    ["transform-react-jsx", { "pragma": "h" }]
+  ]
 }

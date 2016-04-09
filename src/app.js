@@ -9,14 +9,12 @@ import { createMenu, createDomMenu, showMenu } from 'menu';
 import dropbox from 'dropbox-client';
 
 export default class App extends Component {
-	getInitialState() {
-		return {
-			path: '/',
-			loading: false,
-			history: [],
-			files: []
-		};
-	}
+	state = {
+		path: '/',
+		loading: false,
+		history: [],
+		files: []
+	};
 
 	componentDidMount() {
 		dropbox.init( err => {
@@ -86,7 +84,7 @@ export default class App extends Component {
 			autoSync: true,
 			onUpload: () => {
 				console.log('File changed and uploaded. Reloading list.');
-				this.go(0);
+				this.navigate(0);
 			}
 		}, (err, localPath) => {
 			this.setState({ loading:false });

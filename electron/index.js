@@ -5,7 +5,7 @@ import menu from './menu';
 
 const HOST = `localhost:${process.env.PORT || 19998}`;
 
-const DEV = process.env.ENV==='dev';
+const DEV = process.env.ENV==='development';
 
 // adds debug features like hotkeys for triggering dev tools and reload
 if (DEV) {
@@ -24,8 +24,8 @@ function createMainWindow() {
 	const win = new BrowserWindow({
 		width: DEV ? 1200 : 800,
 		height: DEV ? 600 : 500,
-		'min-width': 500,
-		'min-height': 200,
+		minWidth: 500,
+		minHeight: 200,
 		'accept-first-mouse': true,
 		'title-bar-style': 'hidden'
 	});
@@ -37,11 +37,11 @@ function createMainWindow() {
 	});
 
 	if (DEV) {
-		win.loadUrl(`http://${HOST}/`);
+		win.loadURL(`http://${HOST}/`);
 		win.toggleDevTools();
 	}
 	else {
-		win.loadUrl(`file://${__dirname}/../index.html`);
+		win.loadURL(`file://${__dirname}/../index.html`);
 	}
 
 	return win;
