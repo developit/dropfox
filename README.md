@@ -10,31 +10,56 @@ A dropbox client powered by [Preact], [Electron] and [Photon].
 >
 > If you need a key, [generate one here](https://www.dropbox.com/developers/apps/).
 
-## Dev
 
-```
-$ npm install
+## Installation
+
+```sh
+npm install
 ```
 
-### Run
 
+### Run for Development
+
+Runs a local copy of Electron (via electron-prebuilt), rendering the app with Live-Reload / [HMR] via [webpack-dev-server].
+
+> **Note:** you may need to reload _(Cmd/Ctrl + R)_ after the initial Webpack build completes.
+
+```sh
+npm start
 ```
-$ npm start
-```
+
 
 ### Build
 
-```
-$ npm run build
+To build the app for OS X, Linux, and Windows, using [electron-packager]:
+
+```sh
+npm run build
 ```
 
-Builds the app for OS X, Linux, and Windows, using [electron-packager](https://github.com/maxogden/electron-packager).
+
+### Platform-Specific Builds
+
+You can also build the codebase, and then package it only for a given platform:
+
+```sh
+# build the electron & web source:
+npm run build:all
+
+# generate the package for your platform(s):
+npm run build:electron:osx
+npm run build:electron:linux
+npm run build:electron:win
+```
 
 
 ## License
 
 MIT © [Jason Miller](http://jasonformat.com)
 
+[webpack-dev-server]: https://webpack.github.io/docs/webpack-dev-server.html
+[HMR]: https://webpack.github.io/docs/hot-module-replacement.html
 [preact]: https://github.com/developit/preact
 [electron]: https://github.com/atom/electron
 [photon]: https://github.com/connors/photon
+[electron-packager]: https://github.com/maxogden/electron-packager
