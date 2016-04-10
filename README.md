@@ -2,6 +2,7 @@
 
 A dropbox client powered by [Preact], [Electron] and [Photon].
 
+> ### [Download Dropfox ➞](https://github.com/developit/dropfox/releases)
 
 <img src="http://i.imgur.com/fN1PmUN.png" width="717">
 
