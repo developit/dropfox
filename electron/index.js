@@ -5,7 +5,7 @@ import menu from './menu';
 
 const HOST = `localhost:${process.env.PORT || 19998}`;
 
-const DEV = process.env.ENV==='development';
+const DEV = process.env.NODE_ENV==='development';
 
 // adds debug features like hotkeys for triggering dev tools and reload
 if (DEV) {
@@ -26,8 +26,10 @@ function createMainWindow() {
 		height: DEV ? 600 : 500,
 		minWidth: 500,
 		minHeight: 200,
-		'accept-first-mouse': true,
-		'title-bar-style': 'hidden'
+		webgl: false,
+		acceptFirstMouse: true,
+		titleBarStyle: 'hidden',
+		show: false
 	});
 
 	menu(win);
@@ -41,8 +43,10 @@ function createMainWindow() {
 		win.toggleDevTools();
 	}
 	else {
-		win.loadURL(`file://${__dirname}/../index.html`);
+		win.loadURL(`file://${__dirname}/web/index.html`);
 	}
+
+	setTimeout( () => win.show(), 150);
 
 	return win;
 }
@@ -58,12 +62,12 @@ function overrideWindowOpen() {
 				frame: true,
 				resizable: false,
 				title: `Loading ${host}...`,
-				'title-bar-style': 'visible',
-				'always-on-top': true,
-				'use-content-size': true,
-				'skip-taskbar': true,
-				'node-integration': false,
-				'web-preferences': {
+				titleBarStyle: 'visible',
+				alwaysOnTop: true,
+				useContentSize: true,
+				skipTaskbar: true,
+				nodeIntegration: false,
+				webPreferences: {
 					'web-security': true
 				}
 			});

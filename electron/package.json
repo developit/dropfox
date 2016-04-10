@@ -1,0 +1,22 @@
+{
+  "name": "Dropfox",
+  "productName": "Dropfox",
+  "version": "1.1.0",
+  "description": "Dropbox client, powered by Preact & Electron.",
+  "main": "index.js",
+  "author": {
+    "name": "Jason Miller",
+    "email": "jason@developit.ca",
+    "url": "http://jasonformat.com"
+  },
+  "electronVersion": "0.37.5",
+  "files": [
+    "web/index.html",
+    "web/bundle.js",
+    "web/style.css"
+  ],
+  "dependencies": {
+    "request": "^2.70.0",
+    "tmp": "0.0.28"
+  }
+}

@@ -1,26 +1,18 @@
-var fs = require('fs');
-	request = require('request');
+import fs from 'fs';
+import request from 'request';
 
-exports.upload = function upload(path, url, callback) {
+export function upload(path, url, callback) {
 	function done(err) {
 		if (callback) callback(err);
 		callback = null;
 	}
 
 	fs.createReadStream(path)
-		.on('error', function(err) {
-			done(err);
-		})
+		.on('error', done)
 		.pipe(
 			request.put(url, done)
-				.on('error', function(err) {
-					done(err);
-				})
-				.on('finish', function() {
-					done();
-				})
+				.on('error', done)
+				.on('finish', () => done() )
 		)
-		.on('finish', function() {
-			done();
-		});
+		.on('finish', () => done() );
 };

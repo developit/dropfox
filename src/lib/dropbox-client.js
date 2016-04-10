@@ -1,12 +1,12 @@
 import Emitter from 'wildemitter';
 import { debounce } from 'decko';
 import { Client, AuthDriver } from 'dropbox';
-import remote from 'remote';
+import remoteRequire from 'remote-require';
 
-const request = remote.require('request');
-const fs = remote.require('fs');
-const tmp = remote.require('tmp');
-const shell = remote.require('shell');
+const request = remoteRequire('request');
+const fs = remoteRequire('fs');
+const tmp = remoteRequire('tmp');
+const shell = remoteRequire('shell');
 
 const dropbox = new Client({
 	key: API_KEY
@@ -82,15 +82,19 @@ export function open(path, options, callback) {
 
 
 function watchAndUpload(localPath, path, onUpload) {
-	fs.watch(localPath, debounce(1000, changeType => {
-		console.log('changed', changeType, localPath);
+	let start = Date.now();
+	fs.watch(localPath, {
+		persistent: false
+	}, debounce(1000, changeType => {
+		if (Date.now()-start < 3000) return;
+		// console.log('changed', changeType);
 
 		upload(localPath, path, onUpload);
 	}));
 }
 
 
-const backend = remote.require('../../electron/backend');
+let backend = remoteRequire('./backend');
 export function upload(localPath, path, callback) {
 	let url = `${dropbox._urls.putFile}/${path}?access_token=${dropbox.credentials().token}`;
 	backend.upload(localPath, url, err => {

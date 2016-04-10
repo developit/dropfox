@@ -14,9 +14,9 @@ module.exports = {
 	target: 'web',
 
 	output: {
-		path: `${__dirname}/build`,
-		publicPath: '/',
-		filename: 'index.js'
+		path: `${__dirname}/app/web`,
+		// publicPath: '/',
+		filename: 'bundle.js'
 	},
 
 	resolve: {
@@ -74,12 +74,14 @@ module.exports = {
 	plugins: [
 		new webpack.NoErrorsPlugin(),
 		new ExtractTextPlugin('style.css', {
-			allChunks: true
+			allChunks: true,
+			disable: ENV!=='production'
 		}),
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.DefinePlugin({
-			API_KEY: JSON.stringify(process.env.DROPBOX_API_KEY)
+			API_KEY: JSON.stringify(process.env.DROPBOX_API_KEY),
+			'process.env.NODE_ENV': JSON.stringify(ENV)
 		}),
 		new HtmlWebpackPlugin({
 			title: pkg.productName || pkg.name,
@@ -94,6 +96,8 @@ module.exports = {
 		global: false,
 		process: false,
 		Buffer: false,
+		__filename: false,
+		__dirname: false,
 		setImmediate: false
 	},
 

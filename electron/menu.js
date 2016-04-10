@@ -3,7 +3,7 @@ import app from 'app';
 import Menu from 'menu';
 
 const MAC = process.platform==='darwin';
-const DEV = process.env.ENV==='dev';
+const DEV = process.env.NODE_ENV==='dev';
 const MENU = [];
 
 export default win => {

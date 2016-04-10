@@ -2,45 +2,34 @@
   "name": "dropfox",
   "productName": "Dropfox",
   "version": "1.1.0",
-  "description": "Dropbox client, powered by Electron.",
+  "description": "Dropbox client, powered by Preact & Electron.",
   "license": "MIT",
-  "main": "build/electron/index.js",
   "repository": "developit/dropfox",
-  "author": {
-    "name": "Jason Miller",
-    "email": "jason@developit.ca",
-    "url": "http://jasonformat.com"
-  },
+  "author": "Jason Miller <jason@developit.ca> (http://jasonformat.com)",
   "engines": {
     "node": ">=4"
   },
   "electronVersion": "0.37.5",
   "scripts": {
     "test": "eslint src",
-    "start": "ENV=development npm-run-all build:assets build:transpilewrap --parallel dev thenelectron",
+    "start": "NODE_ENV=development npm-run-all build:transpilewrap --parallel dev thenelectron",
     "dev": "webpack-dev-server --hot --inline --progress",
-    "thenelectron": "sleep 2; electron .",
-    "clean": "rm -rf build && mkdir -p build/assets",
-    "build": "npm-run-all clean build:assets build:transpilewrap build:transpile build:electron:all",
-    "build:test": "npm-run-all build:assets build:transpilewrap build:transpile build:electron:osx && ./dist/${npm_package_productName}-darwin-x64/${npm_package_productName}.app/Contents/MacOS/Electron",
-    "build:assets": "ncp src/assets build/assets",
-    "build:transpilewrap": "babel electron -s -d build/electron",
-    "build:transpile": "ENV=production webpack -p",
-    "build:electron:all": "npm-run-all --parallel build:electron:*",
-    "build:electron:osx": "npm run build:electron -- --icon ./src/assets/icon.icns --platform=darwin",
+    "thenelectron": "sleep 2; electron ./app",
+    "clean": "rm -rf app && rm -rf dist && mkdir -p app/web/assets",
+    "build": "npm-run-all build:all build:electron-all",
+    "build:test": "npm-run-all build:all build:electron:osx && ./dist/${npm_package_productName}-darwin-x64/${npm_package_productName}.app/Contents/MacOS/Dropfox",
+    "build:all": "npm-run-all clean build:assets build:transpilewrap build:transpile build:packagejson build:install",
+    "build:assets": "ncp src/assets app/web/assets",
+    "build:packagejson": "ncp electron/package.json app/package.json",
+    "build:install": "cd app && npm i --production && cd ..",
+    "build:transpilewrap": "babel electron -s inline -d app",
+    "build:transpile": "NODE_ENV=production webpack -p",
+    "build:electron-all": "npm-run-all build:electron:*",
+    "build:electron:osx": "npm run build:electron -- --icon ./src/assets/icon.icns --platform=darwin && electron-installer-dmg ./dist/${npm_package_productName}-darwin-x64/${npm_package_productName}.app $npm_package_productName --out=./dist/${npm_package_productName}-darwin-x64 --icon=./src/assets/icon.icns --overwrite",
     "build:electron:linux": "npm run build:electron -- --icon ./src/assets/icon.png --platform=linux",
     "build:electron:win": "npm run build:electron -- --icon ./src/assets/icon.ico --platform=win32",
-    "build:electron": "electron-packager . $npm_package_productName --out=dist --ignore='^/(src|dist|LICENSE)$' --overwrite --prune --asar --arch=all --version=$npm_package_electronVersion"
+    "build:electron": "electron-packager ./app --out=dist --overwrite --prune --arch=all"
   },
-  "files": [
-    "build/assets/oauth_receiver.html",
-    "build/index.js",
-    "build/index.html",
-    "build/style.css"
-  ],
-  "keywords": [
-    "electron-app"
-  ],
   "dependencies": {
     "decko": "^1.1.3",
     "dropbox": "robertknight/dropbox-js#5568865764d9deab69836569a69d72d200c88293",
@@ -49,8 +38,6 @@
     "praline": "^0.3.1",
     "preact": "^4.5.1",
     "preact-photon": "^1.1.1",
-    "request": "^2.70.0",
-    "tmp": "0.0.28",
     "wildemitter": "^1.2.0"
   },
   "devDependencies": {
@@ -66,6 +53,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "css-loader": "^0.23.1",
     "electron-debug": "^0.6.0",
+    "electron-installer-dmg": "^0.1.0",
     "electron-packager": "^6.0.1",
     "electron-prebuilt": "^0.37.5",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -74,6 +62,7 @@
     "less": "^2.6.1",
     "less-loader": "^2.2.1",
     "ncp": "^2.0.0",
+    "npm-run-all": "^1.7.0",
     "postcss-loader": "^0.8.2",
     "raw-loader": "^0.5.1",
     "redux": "^3.4.0",

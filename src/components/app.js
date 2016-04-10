@@ -2,9 +2,9 @@ import { bind, memoize } from 'decko';
 import { parallel } from 'praline';
 import { Component, h, render } from 'preact';
 import { Header, Title, Footer, Icon, Button, ButtonGroup } from 'preact-photon';
-import Sidebar from './components/sidebar';
-import PathBar from './components/path-bar';
-import FileList from './components/file-list';
+import Sidebar from './sidebar';
+import PathBar from './path-bar';
+import FileList from './file-list';
 import { createMenu, createDomMenu, showMenu } from 'menu';
 import dropbox from 'dropbox-client';
 
