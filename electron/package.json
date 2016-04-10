@@ -1,7 +1,7 @@
 {
   "name": "Dropfox",
   "productName": "Dropfox",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Dropbox client, powered by Preact & Electron.",
   "main": "index.js",
   "author": {
