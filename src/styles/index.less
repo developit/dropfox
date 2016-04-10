@@ -102,7 +102,13 @@ table + table tbody {
 	width: 100%;
 	display: table;
 }
+table + table tr {
+	background: #FFF;
 
+	&:nth-child(odd):not(.selected):not(:active) {
+		background: #F5F5F5;
+	}
+}
 
 
 .rotate {
