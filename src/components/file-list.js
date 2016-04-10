@@ -6,10 +6,56 @@ import { Icon } from 'preact-photon';
 const time = memoize( str => neatime(new Date(str)).replace(/^(\d+[a-z])$/g,'$1 ago') );
 
 export default class FileList extends Component {
-	// componentWillMount() {
-	// 	store.subscribe( () =>
-	// }
-	// onSelect={ e => selectFile(e.file) }
+	@bind
+	handleKey(e) {
+		if (e.code==='ArrowUp' || e.keyCode===38) {
+			this.move(-1);
+		}
+		else if (e.code==='ArrowDown' || e.keyCode===40) {
+			this.move(1);
+		}
+		else if (e.code==='Enter' || e.keyCode===13) {
+			this.openSelected();
+		}
+		else {
+			return;
+		}
+		e.preventDefault();
+		return false;
+	}
+
+	openSelected() {
+		let { action } = this.props,
+			{ selected } = this.state;
+		if (action && selected) {
+			action({ file: selected });
+		}
+	}
+
+	move(delta) {
+		let { files } = this.props,
+			{ selected } = this.state,
+			index = files.indexOf(selected);
+		if (index===-1 && delta<0) index = files.length;
+		index += delta;
+		if (index>=0 && index<files.length) {
+			selected = files[index];
+			this.setState({ selected });
+		}
+	}
+
+	componentDidMount() {
+		addEventListener('keydown', this.handleKey);
+	}
+
+	componentWillUnmount() {
+		removeEventListener('keydown', this.handleKey);
+	}
+
+	componentDidUpdate() {
+		let selected = this.base && this.base.querySelector('.selected');
+		if (selected) selected.scrollIntoViewIfNeeded();
+	}
 
 	render({ files, action, ...props }, { selected }) {
 		return (
