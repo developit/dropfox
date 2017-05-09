@@ -1,5 +1,7 @@
 # Dropfox
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/developit/dropfox.svg)](https://greenkeeper.io/)
+
 A dropbox client powered by [Preact], [Electron] and [Photon].
 
 > ### [Download Dropfox ➞](https://github.com/developit/dropfox/releases)
